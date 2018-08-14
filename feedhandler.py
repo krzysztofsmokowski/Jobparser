@@ -1,6 +1,7 @@
 import requests
 import feedparser
 import configuration
+import telepot
 from twilio.rest import Client
 
 
@@ -27,12 +28,14 @@ class FeedHandler(object):
         return message.sid
         
 
+    def telegram_sender(self):
+        bot = telepot.Bot(configuration.telegram_auth)
+        bot.sendMessage(configuration.telegram_id, str(self.entries_string_creating()))
 
 
 def main():
     FH = FeedHandler('https://justjoin.it/feed', 'Python', 'Poznań')
-    print(FH.entries_string_creating())
-    #FH.twilio_sms_sender()
+    print(FH.telegram_sender())
 
 if __name__ == '__main__':
     main()
