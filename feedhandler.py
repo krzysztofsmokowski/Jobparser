@@ -3,8 +3,8 @@ import feedparser
 import configuration
 import telepot
 import time
+from datetime import datetime
 import logging
-from twilio.rest import Client
 
 
 class FeedHandler(object):
@@ -22,14 +22,6 @@ class FeedHandler(object):
             if self.programming_language in entries.title and self.location in entries.summary:
                 job_list += entries.title + ' '
         return job_list
-
-    def twilio_sms_sender(self):
-        client = Client(configuration.account_sid, configuration.auth_token)
-        message = client.messages.create(
-                to=configuration.to,
-                from_=configuration._from,
-                body=self.entries_string_creating())
-        return message.sid
         
     def telegram_sender(self):
         self.bot.sendMessage(configuration.telegram_id, str(self.entries_string_creating()))
@@ -45,6 +37,7 @@ class FeedHandler(object):
             else:
                 self.telegram_sender()
                 logging.info("new jobs appeared, message sent")
+                logging.info(datetime.now().isoformat(timespec='hours'))
 
                 
 def main():
