@@ -43,6 +43,7 @@ class FeedHandler(object):
                 
 def main():
     FH = FeedHandler('https://justjoin.it/feed', 'Python', 'Poznań')
+    FH.telegram_sender()
     FH.jobs_list_compare()
 
 if __name__ == '__main__':
